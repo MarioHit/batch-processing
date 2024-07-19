@@ -38,6 +38,7 @@ public class BatchConfig {
     private final PlatformTransactionManager platformTransactionManager;
     private final StudentRepository studentRepository;
     private final StudentWithCategoryRepository studentWithCategoryRepository;
+    private final JobCompletionNotificationListener listener;
 
     /* Etape 1  lire le fichier csv et écrire en Bdd */
 
@@ -182,6 +183,7 @@ public class BatchConfig {
                 .reader(studentWithCategoryReader())
                 .processor(studentCategoryFilterProcessor())
                 .writer(csvWriter())
+                .listener(listener)
                 .taskExecutor(taskExecutor())
                 .build();
     }

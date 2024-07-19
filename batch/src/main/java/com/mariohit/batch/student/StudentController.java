@@ -1,5 +1,7 @@
 package com.mariohit.batch.student;
 
+import com.mariohit.batch.config.JobCompletionNotificationListener;
+import com.mariohit.batch.studentWithCategory.StudentWithCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/students")
 @RequiredArgsConstructor
@@ -21,8 +25,12 @@ public class StudentController {
     private final JobLauncher jobLauncher;
     private final Job job;
 
+    private final JobCompletionNotificationListener listener;
+
+
+
     @PostMapping
-    public void importCsvToDBJob() {
+    public List<StudentWithCategory> importCsvToDBJob() {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("startAt", System.currentTimeMillis())
                 .toJobParameters();
@@ -33,5 +41,6 @@ public class StudentController {
             e.printStackTrace();
             // throw new RuntimeException(e);
         }
+        return listener.getProcessedStudents();
     }
 }
