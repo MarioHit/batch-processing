@@ -18,11 +18,15 @@ Le lancement de l'application se fait en envoyant une requête HTTP POST à l'UR
 
 - **Test de performance** : Le traitement de 100 000 lignes prend environ 41 secondes et 292 millisecondes.
 
-## Évolutions Futures
+## Évolutions en cours : 
 
 ### Étape 2 : Ajout de la colonne "cat"
 
 - **Objectif** : Ajouter une nouvelle étape pour écrire les données dans une nouvelle table avec une colonne supplémentaire `cat` qui indique la tranche d'âge (dizaine, vingtaine, etc.).
+
+
+## Évolutions Futures
+
 
 ### Étape 3 : Filtrage et Exportation CSV
 
