@@ -46,7 +46,7 @@ public class BatchConfig {
     public FlatFileItemReader<Student> itemReader() {
         FlatFileItemReader<Student> itemReader = new FlatFileItemReader<>();
 
-        itemReader.setResource(new FileSystemResource("src/main/resources/students10k.csv"));
+        itemReader.setResource(new FileSystemResource("src/main/resources/students200.csv"));
         itemReader.setName("csvReader");
         itemReader.setLinesToSkip(1);
         itemReader.setLineMapper(lineMapper());
