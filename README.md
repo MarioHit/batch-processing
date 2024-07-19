@@ -97,6 +97,4 @@ Le lancement de l'application se fait en envoyant une requête HTTP POST à l'UR
 - `StudentProcessor.java` : Classe pour transformer les données des étudiants.
 - `students.csv` : Fichier CSV d'exemple pour l'importation des données.
 
----
 
-En utilisant ce README, les utilisateurs et les développeurs peuvent comprendre rapidement le but du projet, ses fonctionnalités actuelles et ses évolutions futures, ainsi que les instructions pour lancer l'application et les technologies utilisées.
