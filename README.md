@@ -23,17 +23,23 @@ Le lancement de l'application se fait en envoyant une requête HTTP POST à l'UR
 - **Objectif** : Ajouter une nouvelle étape pour écrire les données dans une nouvelle table avec une colonne supplémentaire `cat` qui indique la tranche d'âge (dizaine, vingtaine, etc.).
 
 
-## Évolutions en cours : 
+
 
 ### Étape 3 : Filtrage et Exportation CSV
 
 - **Objectif** : Lire la nouvelle table, filtrer les enregistrements pour ne prendre que ceux dont la colonne `cat` est "cinquantaine ou plus", puis insérer ces données filtrées dans un fichier CSV.
-- 
-## Évolutions Futures
+
+## Évolutions en cours : 
 
 ### Étape 4 : Réponse JSON
 
 - **Objectif** : Faire une réponse au POST initial avec les données JSON correspondantes après traitement.
+
+## Évolutions Futures
+- lancer plusieurs jobs
+- finaliser les test
+- ajouter log
+- dockerize
 
 ## Instructions de Lancement
 
