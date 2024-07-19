@@ -36,7 +36,7 @@ Le lancement de l'application se fait en envoyant une requête HTTP POST à l'UR
 
 1. Cloner le dépôt :
     ```sh
-    git clone <URL_DU_DÉPÔT>
+    git clone https://github.com/MarioHit/batch-processing
     cd batch-processing
     ```
 
