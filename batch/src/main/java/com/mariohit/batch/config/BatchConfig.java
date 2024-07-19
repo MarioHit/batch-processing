@@ -79,6 +79,7 @@ public class BatchConfig {
                 .build();
     }
 
+    // Pour pouvoir lancer les job en parallele
     @Bean
     public TaskExecutor taskExecutor() {
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
@@ -88,7 +89,7 @@ public class BatchConfig {
 
 
 
-    //linemapper that will take a line and return a student
+    //linemapper qui va associer une les lignes du fichier à la table student
     private LineMapper<Student> lineMapper() {
         DefaultLineMapper<Student> lineMapper = new DefaultLineMapper<>();
 
