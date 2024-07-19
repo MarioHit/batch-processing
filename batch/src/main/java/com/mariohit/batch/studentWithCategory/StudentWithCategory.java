@@ -8,13 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentWithCategory {
+public class StudentWithCategory implements Serializable {
+
     @Id
     @GeneratedValue
     private Long id;

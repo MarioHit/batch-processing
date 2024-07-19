@@ -9,13 +9,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 @Component
 @Slf4j
 public class JobCompletionNotificationListener extends StepExecutionListenerSupport {
 
-    private List<StudentWithCategory> processedStudents = new ArrayList<>();
+    private List<StudentWithCategory> processedStudents = new CopyOnWriteArrayList<>();
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {

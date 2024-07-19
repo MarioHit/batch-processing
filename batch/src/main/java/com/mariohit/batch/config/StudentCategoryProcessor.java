@@ -8,6 +8,7 @@ import org.springframework.batch.item.ItemProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StudentCategoryProcessor implements ItemProcessor<Student, StudentWithCategory> {
 
@@ -38,7 +39,7 @@ public class StudentCategoryProcessor implements ItemProcessor<Student, StudentW
 
         List<StudentWithCategory> processedStudents = (List<StudentWithCategory>) stepExecution.getJobExecution().getExecutionContext().get("processedStudents");
         if (processedStudents == null) {
-            processedStudents = new ArrayList<>();
+            processedStudents = new CopyOnWriteArrayList<>();
             stepExecution.getJobExecution().getExecutionContext().put("processedStudents", processedStudents);
         }
         processedStudents.add(studentWithCategory);
