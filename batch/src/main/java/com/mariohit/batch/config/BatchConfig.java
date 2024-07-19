@@ -2,6 +2,8 @@ package com.mariohit.batch.config;
 
 import com.mariohit.batch.student.Student;
 import com.mariohit.batch.student.StudentRepository;
+import com.mariohit.batch.studentWithCategory.StudentWithCategory;
+import com.mariohit.batch.studentWithCategory.StudentWithCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -28,6 +30,8 @@ public class BatchConfig {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final StudentRepository studentRepository;
+    private final StudentWithCategoryRepository studentWithCategoryRepository;
+
 
     //create the itemreader
     @Bean
@@ -58,6 +62,23 @@ public class BatchConfig {
         return writer;
     }
 
+    // reader pour catégorie
+
+    // processor pour categorie
+    @Bean
+    public StudentCategoryProcessor studentCategoryProcessor() {
+        return new StudentCategoryProcessor();
+    }
+
+    // writer pour categorie
+    @Bean
+    public RepositoryItemWriter<StudentWithCategory> studentcategoryWriter() {
+        RepositoryItemWriter<StudentWithCategory> writer = new RepositoryItemWriter<>();
+        writer.setRepository(studentWithCategoryRepository);
+        writer.setMethodName("save");
+        return writer;
+    }
+
     //création d'une étape
     @Bean
     public Step importStep() {
@@ -70,15 +91,29 @@ public class BatchConfig {
                 .build();
     }
 
+    // catégoriser les student
+    @Bean
+    public Step categoryStep() {
+        return new StepBuilder("categorizeStudents", jobRepository)
+                .<Student, StudentWithCategory>chunk(10, platformTransactionManager)
+                .reader(itemReader())
+                .processor(studentCategoryProcessor())
+                .writer(studentcategoryWriter())
+                .taskExecutor(taskExecutor())
+                .build();
+    }
+
 
     //création d'un job
     @Bean
     public Job runJob() {
         return new JobBuilder("importStudents",jobRepository)
                 .start(importStep())
+                .next(categoryStep())
                 .build();
     }
 
+    // Pour pouvoir lancer les job en parallele
     @Bean
     public TaskExecutor taskExecutor() {
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
@@ -88,7 +123,7 @@ public class BatchConfig {
 
 
 
-    //linemapper that will take a line and return a student
+    //linemapper qui va associer une les lignes du fichier à la table student
     private LineMapper<Student> lineMapper() {
         DefaultLineMapper<Student> lineMapper = new DefaultLineMapper<>();
 
