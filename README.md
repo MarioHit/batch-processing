@@ -14,6 +14,6 @@ Pour faire les traitement le test a été fait avec 100 000 lignes pour 41s292ms
 
 
 Par la suite nous allons ajouter 3 autres étapes 
-- une pour écrire dans une nouvelle table en ajoutant la colonne "categorie" qui va indiquer la tranche d'age ( dizaine ,vigntaine, ... )
-- une autre pour lire cette nouvelle table et inserer dans le fichier CSV.
+- une pour écrire dans une nouvelle table en ajoutant la colonne "cat" qui va indiquer la tranche d'age ( dizaine ,vigntaine, ... )
+- une autre pour lire cette nouvelle table filtrer sur la colonne "cat" , ne prendre que les gens dont la cat est "cinquantenaire ou plus" et inserer dans le fichier CSV.
 - faire une réponse au post avec le json correspondant 
