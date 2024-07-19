@@ -10,6 +10,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
@@ -21,7 +22,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import java.util.Collections;
 
 @Configuration
 @RequiredArgsConstructor
@@ -38,7 +42,7 @@ public class BatchConfig {
     public FlatFileItemReader<Student> itemReader() {
         FlatFileItemReader<Student> itemReader = new FlatFileItemReader<>();
 
-        itemReader.setResource(new FileSystemResource("src/main/resources/students.csv"));
+        itemReader.setResource(new FileSystemResource("src/main/resources/students50k.csv"));
         itemReader.setName("csvReader");
         itemReader.setLinesToSkip(1);
         itemReader.setLineMapper(lineMapper());
@@ -63,7 +67,15 @@ public class BatchConfig {
     }
 
     // reader pour catégorie
-
+    @Bean
+    public RepositoryItemReader<Student> studentDatabaseItemReader() {
+        RepositoryItemReader<Student> reader = new RepositoryItemReader<>();
+        reader.setRepository(studentRepository);
+        reader.setMethodName("findAll");
+        reader.setPageSize(10);
+        reader.setSort(Collections.singletonMap("id", Sort.Direction.ASC));
+        return reader;
+    }
     // processor pour categorie
     @Bean
     public StudentCategoryProcessor studentCategoryProcessor() {
@@ -72,7 +84,7 @@ public class BatchConfig {
 
     // writer pour categorie
     @Bean
-    public RepositoryItemWriter<StudentWithCategory> studentcategoryWriter() {
+    public RepositoryItemWriter<StudentWithCategory> studentCategoryWriter() {
         RepositoryItemWriter<StudentWithCategory> writer = new RepositoryItemWriter<>();
         writer.setRepository(studentWithCategoryRepository);
         writer.setMethodName("save");
@@ -96,9 +108,9 @@ public class BatchConfig {
     public Step categoryStep() {
         return new StepBuilder("categorizeStudents", jobRepository)
                 .<Student, StudentWithCategory>chunk(10, platformTransactionManager)
-                .reader(itemReader())
+                .reader(studentDatabaseItemReader())
                 .processor(studentCategoryProcessor())
-                .writer(studentcategoryWriter())
+                .writer(studentCategoryWriter())
                 .taskExecutor(taskExecutor())
                 .build();
     }
