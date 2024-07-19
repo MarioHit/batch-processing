@@ -13,9 +13,12 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
+import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,13 +39,14 @@ public class BatchConfig {
     private final StudentRepository studentRepository;
     private final StudentWithCategoryRepository studentWithCategoryRepository;
 
+    /* Etape 1  lire le fichier csv et écrire en Bdd */
 
     //create the itemreader
     @Bean
     public FlatFileItemReader<Student> itemReader() {
         FlatFileItemReader<Student> itemReader = new FlatFileItemReader<>();
 
-        itemReader.setResource(new FileSystemResource("src/main/resources/students50k.csv"));
+        itemReader.setResource(new FileSystemResource("src/main/resources/students10k.csv"));
         itemReader.setName("csvReader");
         itemReader.setLinesToSkip(1);
         itemReader.setLineMapper(lineMapper());
@@ -66,6 +70,9 @@ public class BatchConfig {
         return writer;
     }
 
+
+    /* Etape 2  lire le fichier la bdd et écrire en Bdd dans une autre table */
+
     // reader pour catégorie
     @Bean
     public RepositoryItemReader<Student> studentDatabaseItemReader() {
@@ -74,6 +81,11 @@ public class BatchConfig {
         reader.setMethodName("findAll");
         reader.setPageSize(10);
         reader.setSort(Collections.singletonMap("id", Sort.Direction.ASC));
+        try {
+            reader.afterPropertiesSet();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize RepositoryItemReader", e);
+        }
         return reader;
     }
     // processor pour categorie
@@ -91,7 +103,54 @@ public class BatchConfig {
         return writer;
     }
 
-    //création d'une étape
+
+    /* Etape 3  lire la bdd et écrire dans une fichier csv */
+
+    // item reader
+    @Bean
+    public RepositoryItemReader<StudentWithCategory> studentWithCategoryReader() {
+        RepositoryItemReader<StudentWithCategory> reader = new RepositoryItemReader<>();
+        reader.setRepository(studentWithCategoryRepository);
+        reader.setMethodName("findAll");
+        reader.setPageSize(10);
+        reader.setSort(Collections.singletonMap("id", Sort.Direction.ASC));
+        try {
+            reader.afterPropertiesSet();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize RepositoryItemReader", e);
+        }
+        return reader;
+    }
+
+
+    //item processor
+    @Bean
+    public StudentCategoryFilterProcessor studentCategoryFilterProcessor() {
+        return new StudentCategoryFilterProcessor();
+    }
+
+
+    // item writer
+    @Bean
+    public FlatFileItemWriter<StudentWithCategory> csvWriter() {
+        FlatFileItemWriter<StudentWithCategory> writer = new FlatFileItemWriter<>();
+        writer.setResource(new FileSystemResource("src/main/resources/output/students_cinquantaine.csv"));
+        writer.setAppendAllowed(false);
+        writer.setHeaderCallback(headerWriter -> headerWriter.write("id,firstname,lastname,age,cat"));
+        writer.setLineAggregator(new DelimitedLineAggregator<StudentWithCategory>() {{
+            setDelimiter(",");
+            setFieldExtractor(new BeanWrapperFieldExtractor<StudentWithCategory>() {{
+                setNames(new String[]{"id", "firstname", "lastname", "age", "cat"});
+            }});
+        }});
+        return writer;
+    }
+
+
+
+
+
+    //Création de l'étape 1
     @Bean
     public Step importStep() {
         return new StepBuilder("importCsv", jobRepository)
@@ -103,7 +162,7 @@ public class BatchConfig {
                 .build();
     }
 
-    // catégoriser les student
+    // Création de l'étape 2  : catégoriser les student
     @Bean
     public Step categoryStep() {
         return new StepBuilder("categorizeStudents", jobRepository)
@@ -115,6 +174,18 @@ public class BatchConfig {
                 .build();
     }
 
+    // Création de l'étape 3 : ecire dans Csv
+    @Bean
+    public Step filterAndExportStep() {
+        return new StepBuilder("filterAndExport", jobRepository)
+                .<StudentWithCategory, StudentWithCategory>chunk(10, platformTransactionManager)
+                .reader(studentWithCategoryReader())
+                .processor(studentCategoryFilterProcessor())
+                .writer(csvWriter())
+                .taskExecutor(taskExecutor())
+                .build();
+    }
+
 
     //création d'un job
     @Bean
@@ -122,6 +193,7 @@ public class BatchConfig {
         return new JobBuilder("importStudents",jobRepository)
                 .start(importStep())
                 .next(categoryStep())
+                .next(filterAndExportStep())
                 .build();
     }
 
