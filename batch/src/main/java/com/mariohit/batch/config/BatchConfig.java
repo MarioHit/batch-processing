@@ -20,6 +20,7 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -39,6 +40,8 @@ public class BatchConfig {
     private final StudentRepository studentRepository;
     private final StudentWithCategoryRepository studentWithCategoryRepository;
     private final JobCompletionNotificationListener listener;
+    @Value("${CSV_FILE_PATH}")
+    private String csvFilePath;
 
     /* Etape 1  lire le fichier csv et écrire en Bdd */
 
@@ -47,7 +50,7 @@ public class BatchConfig {
     public FlatFileItemReader<Student> itemReader() {
         FlatFileItemReader<Student> itemReader = new FlatFileItemReader<>();
 
-        itemReader.setResource(new FileSystemResource("src/main/resources/students200.csv"));
+        itemReader.setResource(new FileSystemResource(csvFilePath));
         itemReader.setName("csvReader");
         itemReader.setLinesToSkip(1);
         itemReader.setLineMapper(lineMapper());
