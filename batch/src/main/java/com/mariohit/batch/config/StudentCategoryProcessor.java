@@ -2,15 +2,19 @@ package com.mariohit.batch.config;
 
 import com.mariohit.batch.student.Student;
 import com.mariohit.batch.studentWithCategory.StudentWithCategory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ItemProcessor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StudentCategoryProcessor implements ItemProcessor<Student, StudentWithCategory> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentCategoryProcessor.class);
+    private static final String PROCESSED_STUDENTS_KEY = "processedStudents";
 
     private StepExecution stepExecution;
 
@@ -21,29 +25,53 @@ public class StudentCategoryProcessor implements ItemProcessor<Student, StudentW
 
     @Override
     public StudentWithCategory process(Student item) throws Exception {
-        String category;
-        int age = item.getAge();
-        if (age < 20) {
-            category = "Dizaine";
-        } else if (age < 30) {
-            category = "Vingtaine";
-        } else if (age < 40) {
-            category = "Trentaine";
-        } else if (age < 50) {
-            category = "Quarantaine";
-        } else {
-            category = "Cinquantaine et plus";
-        }
+        validateStudent(item);
 
-        StudentWithCategory studentWithCategory = new StudentWithCategory(item.getId(), item.getFirstname(), item.getLastname(), item.getAge(), category);
+        String category = determineCategory(item.getAge());
+        StudentWithCategory studentWithCategory = new StudentWithCategory(
+                item.getId(), item.getFirstname(), item.getLastname(), item.getAge(), category
+        );
 
-        List<StudentWithCategory> processedStudents = (List<StudentWithCategory>) stepExecution.getJobExecution().getExecutionContext().get("processedStudents");
-        if (processedStudents == null) {
-            processedStudents = new CopyOnWriteArrayList<>();
-            stepExecution.getJobExecution().getExecutionContext().put("processedStudents", processedStudents);
-        }
-        processedStudents.add(studentWithCategory);
+        addProcessedStudent(studentWithCategory);
+
+        LOGGER.info("Processed student: {} with category: {}", item.getId(), category);
 
         return studentWithCategory;
+    }
+
+    private void validateStudent(Student student) {
+        if (student.getId() == null || student.getFirstname() == null || student.getLastname() == null) {
+            throw new IllegalArgumentException("Student ID, firstname, and lastname cannot be null");
+        }
+    }
+
+    private String determineCategory(Integer age) {
+        if (age == null) {
+            return AgeCategory.AGE_INCONNU.getCategory();
+        } else if (age < 20) {
+            return AgeCategory.DIZAINE.getCategory();
+        } else if (age < 30) {
+            return AgeCategory.VINGTAINE.getCategory();
+        } else if (age < 40) {
+            return AgeCategory.TRENTAINE.getCategory();
+        } else if (age < 50) {
+            return AgeCategory.QUARANTAINE.getCategory();
+        } else {
+            return AgeCategory.CINQUANTAINE_ET_PLUS.getCategory();
+        }
+    }
+
+    private void addProcessedStudent(StudentWithCategory studentWithCategory) {
+        List<StudentWithCategory> processedStudents = (List<StudentWithCategory>) stepExecution
+                .getJobExecution()
+                .getExecutionContext()
+                .get(PROCESSED_STUDENTS_KEY);
+
+        if (processedStudents == null) {
+            processedStudents = new CopyOnWriteArrayList<>();
+            stepExecution.getJobExecution().getExecutionContext().put(PROCESSED_STUDENTS_KEY, processedStudents);
+        }
+
+        processedStudents.add(studentWithCategory);
     }
 }
