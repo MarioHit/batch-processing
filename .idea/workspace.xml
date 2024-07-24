@@ -5,26 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c56a272-d02a-469e-91f6-fcea6c778520" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/batch/k8s-deployments/batch-processing-deployment.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/batch/k8s-deployments/csv-config.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/batch/k8s-deployments/postgres-deployment.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/batch/k8s-deployments/postgres-pv.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/student/StudentRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/config/BatchConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/config/BatchConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/config/StudentProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/config/StudentProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch/src/test/java/com/mariohit/batch/config/StudentProcessorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/batch/src/test/java/com/mariohit/batch/config/StudentProcessorTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Record" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2ja7J7fD7MtK2n4tUZaLVTSwGC4" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -37,6 +49,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "HTTP Request.demo | #1.executor": "Run",
+    "JUnit.StudentProcessorTest.testProcessor.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/hitgi/OneDrive/ondrive/Documents/GitHub/batch-processing",
@@ -53,7 +67,42 @@
       <recent name="C:\Users\hitgi\OneDrive\ondrive\Documents\GitHub\batch-processing\batch\k8s-deployments" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.StudentProcessorTest.testProcessorWithNullAge">
+    <configuration name="demo | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/batch/demo.http" requestIdentifier="#1" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="StudentProcessorTest.testProcessor" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="batch" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mariohit.batch.config.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.mariohit.batch.config" />
+      <option name="MAIN_CLASS_NAME" value="com.mariohit.batch.config.StudentProcessorTest" />
+      <option name="METHOD_NAME" value="testProcessor" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StudentProcessorTest.testProcessorWithNullAge" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="batch" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mariohit.batch.config.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.mariohit.batch.config" />
+      <option name="MAIN_CLASS_NAME" value="com.mariohit.batch.config.StudentProcessorTest" />
+      <option name="METHOD_NAME" value="testProcessorWithNullAge" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="BatchApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="batch" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.mariohit.batch.BatchApplication" />
@@ -61,6 +110,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.StudentProcessorTest.testProcessorWithNullAge" />
+        <item itemvalue="HTTP Request.demo | #1" />
+        <item itemvalue="JUnit.StudentProcessorTest.testProcessor" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -78,7 +134,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1721613259323</updated>
-      <workItem from="1721613260401" duration="6728000" />
+      <workItem from="1721613260401" duration="13650000" />
+      <workItem from="1721727898607" duration="1340000" />
+      <workItem from="1721829048188" duration="3573000" />
     </task>
     <servers />
   </component>
