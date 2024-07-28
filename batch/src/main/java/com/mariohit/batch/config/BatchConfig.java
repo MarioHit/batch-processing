@@ -1,6 +1,7 @@
 package com.mariohit.batch.config;
 
 import com.mariohit.batch.student.Student;
+import com.mariohit.batch.student.StudentRecord;
 import com.mariohit.batch.student.StudentRepository;
 import com.mariohit.batch.studentWithCategory.StudentWithCategory;
 import com.mariohit.batch.studentWithCategory.StudentWithCategoryRepository;
@@ -47,8 +48,8 @@ public class BatchConfig {
 
     //create the itemreader
     @Bean
-    public FlatFileItemReader<Student> itemReader() {
-        FlatFileItemReader<Student> itemReader = new FlatFileItemReader<>();
+    public FlatFileItemReader<StudentRecord> itemReader() {
+        FlatFileItemReader<StudentRecord> itemReader = new FlatFileItemReader<>();
 
         itemReader.setResource(new FileSystemResource(csvFilePath));
         itemReader.setName("csvReader");
@@ -158,7 +159,7 @@ public class BatchConfig {
     @Bean
     public Step importStep() {
         return new StepBuilder("importCsv", jobRepository)
-                .<Student, Student>chunk(10,platformTransactionManager)
+                .<StudentRecord, Student>chunk(10,platformTransactionManager)
                 .reader(itemReader())
                 .processor(processor())
                 .writer(writer())
@@ -211,18 +212,42 @@ public class BatchConfig {
     }
 
 
+    //lineMapper qui va associer une les lignes du fichier à la table student
+    private LineMapper<StudentRecord> lineMapper() {
+        DefaultLineMapper<StudentRecord> lineMapper = new DefaultLineMapper<>();
+
+        DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
+        lineTokenizer.setDelimiter(",");
+        lineTokenizer.setStrict(false);
+        lineTokenizer.setNames("id", "firstname", "lastname", "age");
+
+        // Custom FieldSetMapper to handle null values
+        lineMapper.setLineTokenizer(lineTokenizer);
+        lineMapper.setFieldSetMapper(fieldSet -> {
+            Long id = fieldSet.readLong("id");
+            String firstname = fieldSet.readString("firstname");
+            String lastname = fieldSet.readString("lastname");
+            Integer age = fieldSet.readInt("age", 0); // Default age to 0 if null
+
+            return new StudentRecord(id, firstname, lastname, age);
+        });
+
+        return lineMapper;
+    }
+
+
 
     //linemapper qui va associer une les lignes du fichier à la table student
-    private LineMapper<Student> lineMapper() {
-        DefaultLineMapper<Student> lineMapper = new DefaultLineMapper<>();
+    private LineMapper<StudentRecord> lineMapperOld() {
+        DefaultLineMapper<StudentRecord> lineMapper = new DefaultLineMapper<>();
 
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setDelimiter(",");
         lineTokenizer.setStrict(false);
         lineTokenizer.setNames("id","firstname","lastname","age");
 
-        BeanWrapperFieldSetMapper<Student> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        fieldSetMapper.setTargetType(Student.class);
+        BeanWrapperFieldSetMapper<StudentRecord> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        fieldSetMapper.setTargetType(StudentRecord.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(fieldSetMapper);
