@@ -75,3 +75,9 @@ public class StudentCategoryFilterProcessor implements ItemProcessor<StudentWith
 }
 
 ```
+## Navigation
+
+- [Retour au README principal](README.md)
+- [Étape 1 : Importation CSV](etape-1-importation-csv.md)
+- [Étape 2 : Ajout de la colonne "cat"](etape-2-ajout-colonne-cat.md)
+- [Étape 3 : Filtrage et Exportation CSV](etape-3-filtrage-exportation-csv.md)
