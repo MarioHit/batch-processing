@@ -4,7 +4,7 @@ Accept-Encoding: br, deflate, gzip, x-gzip
 Accept: */*
 content-length: 0
 
-<> 2024-07-27T175915.200.json
+<> 2024-07-28T184910.200.json
 
 ###
 
@@ -14,7 +14,7 @@ Accept-Encoding: br, deflate, gzip, x-gzip
 Accept: */*
 content-length: 0
 
-<> 2024-07-27T174946.200.json
+<> 2024-07-28T180658.200.json
 
 ###
 
@@ -24,7 +24,7 @@ Accept-Encoding: br, deflate, gzip, x-gzip
 Accept: */*
 content-length: 0
 
-<> 2024-07-27T174810.200.json
+<> 2024-07-28T180042.200.json
 
 ###
 
@@ -34,7 +34,7 @@ Accept-Encoding: br, deflate, gzip, x-gzip
 Accept: */*
 content-length: 0
 
-<> 2024-07-27T174509.200.json
+<> 2024-07-28T175535.200.json
 
 ###
 
@@ -44,7 +44,7 @@ Accept-Encoding: br, deflate, gzip, x-gzip
 Accept: */*
 content-length: 0
 
-<> 2024-07-27T174123.200.json
+<> 2024-07-28T174249.200.json
 
 ###
 
@@ -54,7 +54,7 @@ Accept-Encoding: br, deflate, gzip, x-gzip
 Accept: */*
 content-length: 0
 
-<> 2024-07-27T174056.200.json
+<> 2024-07-28T174004.200.json
 
 ###
 
@@ -64,7 +64,7 @@ Accept-Encoding: br, deflate, gzip, x-gzip
 Accept: */*
 content-length: 0
 
-<> 2024-07-26T195551.200.json
+<> 2024-07-28T173906.200.json
 
 ###
 
@@ -74,27 +74,7 @@ Accept-Encoding: br, deflate, gzip, x-gzip
 Accept: */*
 content-length: 0
 
-<> 2024-07-26T195500.200.json
-
-###
-
-POST http://localhost:9090/students
-User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1
-Accept-Encoding: br, deflate, gzip, x-gzip
-Accept: */*
-content-length: 0
-
-<> 2024-07-24T170316.200.json
-
-###
-
-POST http://localhost:9090/students
-User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1
-Accept-Encoding: br, deflate, gzip, x-gzip
-Accept: */*
-content-length: 0
-
-<> 2024-07-24T155810.200.json
+<> 2024-07-28T173706.200.json
 
 ###
 
