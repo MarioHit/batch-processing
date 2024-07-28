@@ -1,45 +1,42 @@
-# Batch Processing
+# Batch Processing avec Spring Batch
 
 ## Introduction
 
-Ce projet est une démonstration de traitement par lots (batch processing) utilisant Spring Batch. L'objectif principal est de lire des données à partir d'un fichier CSV, de les transformer et de les enregistrer dans une base de données, puis d'effectuer des traitements supplémentaires sur ces données.
+Ce projet propose une étude détaillée et des exemples pratiques sur le traitement par lots (batch processing) en utilisant Spring Batch. L'objectif est d'illustrer les concepts fondamentaux ainsi que des techniques avancées pour la gestion des données par lots.
 
-## Fonctionnalités Actuelles
+## Concepts de Batch Processing
 
-### Étape 1 : Importation CSV
+### Batch Job
 
-- **Lecture des données** : Récupère les données depuis un fichier CSV.
-- **Transformation des données** : Modifie le nom des étudiants en les mettant en majuscules.
-- **Enregistrement des données** : Insère les données transformées dans la table `student`.
+Un travail batch (Batch Job) est composé de plusieurs étapes (steps). Chaque step est responsable d'une partie du traitement et peut inclure la lecture des données, leur transformation et leur écriture.
 
-Le lancement de l'application se fait en envoyant une requête HTTP POST à l'URL suivante : `http://localhost:9090/students`.
+### Step
 
-### Performances
+Une étape (Step) est une phase du travail batch. Elle comprend généralement un lecteur (reader), un processeur (processor) et un écrivain (writer).
 
-- **Test de performance** : Le traitement de 100 000 lignes prend environ 41 secondes et 292 millisecondes.
+### Chunk
 
-### Étape 2 : Ajout de la colonne "cat"
+Le traitement par morceaux (Chunk) permet de diviser les données en petits morceaux pour les traiter. Cela améliore les performances et la gestion des transactions.
 
-- **Objectif** : Ajouter une nouvelle étape pour écrire les données dans une nouvelle table avec une colonne supplémentaire `cat` qui indique la tranche d'âge (dizaine, vingtaine, etc.).
+## Explication à travers un Exemple
 
-### Étape 3 : Filtrage et Exportation CSV
+Ce projet utilise un exemple concret pour illustrer le fonctionnement de Spring Batch. Les étapes du projet sont les suivantes :
 
-- **Objectif** : Lire la nouvelle table, filtrer les enregistrements pour ne prendre que ceux dont la colonne `cat` est "cinquantaine ou plus", puis insérer ces données filtrées dans un fichier CSV.
+1. [Étape 1 : Importation CSV](etape-1-importation-csv.md)
+2. [Étape 2 : Ajout de la colonne "cat"](etape-2-ajout-colonne-cat.md)
+3. [Étape 3 : Filtrage et Exportation CSV](etape-3-filtrage-exportation-csv.md)
 
-## Évolutions en cours :
+Chaque étape est détaillée dans un fichier Markdown séparé, qui inclut l'objectif, le code et les explications nécessaires.
 
-### Étape 4 : Réponse JSON
+## Lancer le Projet
 
-- **Objectif** : Faire une réponse au POST initial avec les données JSON correspondantes après traitement.
+### Pré-requis
 
-## Évolutions Futures
+- Java 17
+- Maven
+- Docker
 
-- Lancer plusieurs jobs
-- Finaliser les tests
-- Ajouter des logs
-- Dockeriser l'application
-
-## Instructions de Lancement
+### Instructions de Lancement
 
 1. Cloner le dépôt :
     ```sh
@@ -90,23 +87,6 @@ Le lancement de l'application se fait en envoyant une requête HTTP POST à l'UR
     curl -X POST http://localhost:9090/students
     ```
 
-## Instructions Docker
-
-1. Construire l'image Docker :
-    ```sh
-    docker build -t batch-processing .
-    ```
-
-2. Démarrer les services avec Docker Compose :
-    ```sh
-    docker-compose up
-    ```
-
-3. Envoyer une requête HTTP POST pour démarrer le traitement par lots :
-    ```sh
-    curl -X POST http://localhost:9090/students
-    ```
-
 ## Technologies Utilisées
 
 - **Spring Boot** : Framework pour créer des applications Java autonomes et de production.
@@ -117,8 +97,6 @@ Le lancement de l'application se fait en envoyant une requête HTTP POST à l'UR
 
 - `BatchConfig.java` : Configuration des jobs et des steps.
 - `Student.java` : Entité représentant un étudiant.
-- `StudentRecord.java` : Record pour la lecture des données depuis le CSV.
 - `StudentRepository.java` : Repository pour gérer les opérations CRUD sur les étudiants.
 - `StudentProcessor.java` : Classe pour transformer les données des étudiants.
-- `StudentCategoryProcessor.java` : Classe pour ajouter une catégorie basée sur l'âge.
 - `students.csv` : Fichier CSV d'exemple pour l'importation des données.
