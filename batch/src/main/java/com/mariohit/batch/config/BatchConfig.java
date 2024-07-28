@@ -207,28 +207,31 @@ public class BatchConfig {
     @Bean
     public TaskExecutor taskExecutor() {
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
-        asyncTaskExecutor.setConcurrencyLimit(4);
+        asyncTaskExecutor.setConcurrencyLimit(10);
         return asyncTaskExecutor;
     }
 
 
-
-    //linemapper qui va associer une les lignes du fichier à la table student
+    //lineMapper qui va associer une les lignes du fichier à la table student
     private LineMapper<StudentRecord> lineMapper() {
         DefaultLineMapper<StudentRecord> lineMapper = new DefaultLineMapper<>();
 
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setDelimiter(",");
         lineTokenizer.setStrict(false);
-        lineTokenizer.setNames("id","firstname","lastname","age");
+        lineTokenizer.setNames("id", "firstname", "lastname", "age");
 
-        BeanWrapperFieldSetMapper<StudentRecord> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        fieldSetMapper.setTargetType(StudentRecord.class);
-
+        // Custom FieldSetMapper to handle null values
         lineMapper.setLineTokenizer(lineTokenizer);
-        lineMapper.setFieldSetMapper(fieldSetMapper);
+        lineMapper.setFieldSetMapper(fieldSet -> {
+            Long id = fieldSet.readLong("id");
+            String firstname = fieldSet.readString("firstname");
+            String lastname = fieldSet.readString("lastname");
+            Integer age = fieldSet.readInt("age", 0); // Default age to 0 if null
+
+            return new StudentRecord(id, firstname, lastname, age);
+        });
 
         return lineMapper;
-
     }
 }
