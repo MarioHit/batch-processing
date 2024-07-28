@@ -75,33 +75,3 @@ public class StudentCategoryFilterProcessor implements ItemProcessor<StudentWith
 }
 
 ```
-
-### BatchConfig.java
-
-```java
-
-```
-
-### BatchConfig.java
-
-```java
-
-```
-
-### BatchConfig.java
-
-```java
-
-```
-
-### BatchConfig.java
-
-```java
-
-```
-
-### BatchConfig.java
-
-```java
-
-```

@@ -144,9 +144,3 @@ public class StudentWithCategory {
 
 ```
 
-### BatchConfig.java
-
-```java
-
-```
-
