@@ -1,8 +1,8 @@
 id,firstname,lastname,age,frais
-1,Jean,Dupont,25
-2,Marie,Lefevre,30
-3,Pierre,Martin,22
-4,Lucie,BernardONI,28
+1,Jean,Dupont,
+2,Marie,,30
+3,Pierre,Martin
+4,Lucie,Bernard,28
 5,Michel,Moreau,35
 6,Sophie,Petit,32
 7,Claude,Roux,24

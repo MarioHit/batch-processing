@@ -12,7 +12,7 @@ public class StudentProcessorTest {
 
     @Test
     void testProcessor() throws Exception {
-        StudentRecord studentRecord = new StudentRecord(1L, "John", "Doe", 25);
+        StudentRecord studentRecord = new StudentRecord(1, "John", "Doe", 25);
 
         Student processedStudent = processor.process(studentRecord);
         assertEquals("John", processedStudent.getFirstname());
@@ -22,7 +22,7 @@ public class StudentProcessorTest {
 
     @Test
     void testProcessorWithNullAge() {
-        StudentRecord studentRecord = new StudentRecord(1L, "John", "Doe", null);
+        StudentRecord studentRecord = new StudentRecord(1, "John", "Doe", null);
         assertThrows(IllegalArgumentException.class, () -> {
             processor.process(studentRecord);
         });

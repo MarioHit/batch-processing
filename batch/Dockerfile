@@ -14,6 +14,12 @@ RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/ap
 WORKDIR /app
 COPY --from=build /app/target/batch-0.0.1-SNAPSHOT.jar /app/batch-processing.jar
 COPY src/main/resources/students200.csv /app/src/main/resources/students200.csv
+COPY src/main/resources/students1k.csv /app/src/main/resources/students1k.csv
+COPY src/main/resources/students5k.csv /app/src/main/resources/students5k.csv
+COPY src/main/resources/students10k.csv /app/src/main/resources/students10k.csv
+COPY src/main/resources/students50k.csv /app/src/main/resources/students50k.csv
+COPY src/main/resources/students.csv /app/src/main/resources/students.csv
+COPY src/main/resources/students200Erreur.csv /app/src/main/resources/students200Erreur.csv
 COPY .env .env
 COPY wait-for-postgres.sh /wait-for-postgres.sh
 RUN chmod +x /wait-for-postgres.sh

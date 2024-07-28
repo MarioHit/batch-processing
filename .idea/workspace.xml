@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c56a272-d02a-469e-91f6-fcea6c778520" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/student/StudentRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/batch/src/main/resources/students200Erreur.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/config/BatchConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/config/BatchConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch/.env" beforeDir="false" afterPath="$PROJECT_DIR$/batch/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/batch/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/config/StudentProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/config/StudentProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/student/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/student/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/student/StudentRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/student/StudentRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch/src/main/resources/output/students_cinquantaine.csv" beforeDir="false" afterPath="$PROJECT_DIR$/batch/src/main/resources/output/students_cinquantaine.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/batch/src/main/resources/students200.csv" beforeDir="false" afterPath="$PROJECT_DIR$/batch/src/main/resources/students200.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/batch/src/test/java/com/mariohit/batch/config/StudentProcessorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/batch/src/test/java/com/mariohit/batch/config/StudentProcessorTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,10 +56,14 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "HTTP Request.demo | #1.executor": "Run",
-    "JUnit.StudentProcessorTest.testProcessor.executor": "Run",
+    "JUnit.StudentProcessorTest.executor": "Run",
+    "JUnit.StudentProcessorTest.testProcessor.executor": "Debug",
+    "JUnit.StudentProcessorTest.testProcessorWithNullAge.executor": "Run",
+    "Maven.batch [clean,install].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.BatchApplication.executor": "Run",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/hitgi/OneDrive/ondrive/Documents/GitHub/batch-processing",
+    "last_opened_file_path": "C:/Users/hitgi/OneDrive/ondrive/Documents/GitHub/batch-processing/batch/src/main/resources",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -63,13 +73,31 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hitgi\OneDrive\ondrive\Documents\GitHub\batch-processing\batch\src\main\resources" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\hitgi\OneDrive\ondrive\Documents\GitHub\batch-processing\batch\k8s-deployments" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.StudentProcessorTest.testProcessorWithNullAge">
+  <component name="RunManager" selected="Spring Boot.BatchApplication">
     <configuration name="demo | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/batch/demo.http" requestIdentifier="#1" runType="Run single request">
       <method v="2" />
+    </configuration>
+    <configuration name="StudentProcessorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="batch" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mariohit.batch.config.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.mariohit.batch.config" />
+      <option name="MAIN_CLASS_NAME" value="com.mariohit.batch.config.StudentProcessorTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="StudentProcessorTest.testProcessor" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="batch" />
@@ -112,9 +140,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.StudentProcessorTest.testProcessorWithNullAge" />
         <item itemvalue="HTTP Request.demo | #1" />
         <item itemvalue="JUnit.StudentProcessorTest.testProcessor" />
+        <item itemvalue="JUnit.StudentProcessorTest" />
+        <item itemvalue="JUnit.StudentProcessorTest.testProcessorWithNullAge" />
       </list>
     </recent_temporary>
   </component>
@@ -136,11 +165,37 @@
       <updated>1721613259323</updated>
       <workItem from="1721613260401" duration="13650000" />
       <workItem from="1721727898607" duration="1340000" />
-      <workItem from="1721829048188" duration="3573000" />
+      <workItem from="1721829048188" duration="10557000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/batch/src/test/java/com/mariohit/batch/config/StudentProcessorTest.java</url>
+          <line>16</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/batch/src/test/java/com/mariohit/batch/config/StudentProcessorTest.java</url>
+          <line>17</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/config/StudentProcessor.java</url>
+          <line>12</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/batch/src/main/java/com/mariohit/batch/config/StudentProcessor.java</url>
+          <line>15</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
