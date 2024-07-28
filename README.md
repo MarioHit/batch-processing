@@ -12,7 +12,7 @@ Ce projet est une démonstration de traitement par lots (batch processing) utili
 - **Transformation des données** : Modifie le nom des étudiants en les mettant en majuscules.
 - **Enregistrement des données** : Insère les données transformées dans la table `student`.
 
-Le lancement de l'application se fait en envoyant une requête HTTP POST à l'URL suivante : `http://localhost:8080/students`.
+Le lancement de l'application se fait en envoyant une requête HTTP POST à l'URL suivante : `http://localhost:9090/students`.
 
 ### Performances
 
@@ -22,24 +22,22 @@ Le lancement de l'application se fait en envoyant une requête HTTP POST à l'UR
 
 - **Objectif** : Ajouter une nouvelle étape pour écrire les données dans une nouvelle table avec une colonne supplémentaire `cat` qui indique la tranche d'âge (dizaine, vingtaine, etc.).
 
-
-
-
 ### Étape 3 : Filtrage et Exportation CSV
 
 - **Objectif** : Lire la nouvelle table, filtrer les enregistrements pour ne prendre que ceux dont la colonne `cat` est "cinquantaine ou plus", puis insérer ces données filtrées dans un fichier CSV.
 
-## Évolutions en cours : 
+## Évolutions en cours :
 
 ### Étape 4 : Réponse JSON
 
 - **Objectif** : Faire une réponse au POST initial avec les données JSON correspondantes après traitement.
 
 ## Évolutions Futures
-- lancer plusieurs jobs
-- finaliser les test
-- ajouter log
-- dockerize
+
+- Lancer plusieurs jobs
+- Finaliser les tests
+- Ajouter des logs
+- Dockeriser l'application
 
 ## Instructions de Lancement
 
@@ -89,7 +87,24 @@ Le lancement de l'application se fait en envoyant une requête HTTP POST à l'UR
 
 4. Envoyer une requête HTTP POST pour démarrer le traitement par lots :
     ```sh
-    curl -X POST http://localhost:8080/students
+    curl -X POST http://localhost:9090/students
+    ```
+
+## Instructions Docker
+
+1. Construire l'image Docker :
+    ```sh
+    docker build -t batch-processing .
+    ```
+
+2. Démarrer les services avec Docker Compose :
+    ```sh
+    docker-compose up
+    ```
+
+3. Envoyer une requête HTTP POST pour démarrer le traitement par lots :
+    ```sh
+    curl -X POST http://localhost:9090/students
     ```
 
 ## Technologies Utilisées
@@ -102,8 +117,8 @@ Le lancement de l'application se fait en envoyant une requête HTTP POST à l'UR
 
 - `BatchConfig.java` : Configuration des jobs et des steps.
 - `Student.java` : Entité représentant un étudiant.
+- `StudentRecord.java` : Record pour la lecture des données depuis le CSV.
 - `StudentRepository.java` : Repository pour gérer les opérations CRUD sur les étudiants.
 - `StudentProcessor.java` : Classe pour transformer les données des étudiants.
+- `StudentCategoryProcessor.java` : Classe pour ajouter une catégorie basée sur l'âge.
 - `students.csv` : Fichier CSV d'exemple pour l'importation des données.
-
-
