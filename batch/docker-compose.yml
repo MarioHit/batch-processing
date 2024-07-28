@@ -26,6 +26,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: docker
       SERVER_PORT: 9090
     command: ["/wait-for-postgres.sh", "postgres", "java", "-jar", "batch-processing.jar"]
+    volumes:
+      - ./src/main/resources/output:/app/src/main/resources/output
 
 volumes:
   postgres_data:

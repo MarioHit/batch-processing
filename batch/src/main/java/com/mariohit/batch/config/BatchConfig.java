@@ -6,6 +6,8 @@ import com.mariohit.batch.student.StudentRepository;
 import com.mariohit.batch.studentWithCategory.StudentWithCategory;
 import com.mariohit.batch.studentWithCategory.StudentWithCategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -30,11 +32,18 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 
 @Configuration
 @RequiredArgsConstructor
 public class BatchConfig {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BatchConfig.class);
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
@@ -43,6 +52,8 @@ public class BatchConfig {
     private final JobCompletionNotificationListener listener;
     @Value("${CSV_FILE_PATH}")
     private String csvFilePath;
+    @Value("${OUTPUT_DIRECTORY}")
+    private String outputDirectory;
 
     /* Etape 1  lire le fichier csv et écrire en Bdd */
 
@@ -138,8 +149,24 @@ public class BatchConfig {
     // item writer
     @Bean
     public FlatFileItemWriter<StudentWithCategory> csvWriter() {
+        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        Path outputPath = Paths.get(outputDirectory, "students_cinquantaine_" + timestamp + ".csv");
+
+        try {
+            if (!Files.exists(outputPath.getParent())) {
+                Files.createDirectories(outputPath.getParent());
+            }
+        } catch (Exception e) {
+            LOGGER.error("Failed to create output directory", e);
+        }
+
+        LOGGER.info("Output Path: {}", outputPath.toString());
+        LOGGER.info("Output Path ------: {}", "src/main/resources/output/students_cinquantaine-" + timestamp + ".csv");
+
         FlatFileItemWriter<StudentWithCategory> writer = new FlatFileItemWriter<>();
-        writer.setResource(new FileSystemResource("src/main/resources/output/students_cinquantaine.csv"));
+        //writer.setResource(new FileSystemResource(outputPath.toFile()));
+        //writer.setResource(new FileSystemResource(outputPath));
+        writer.setResource(new FileSystemResource("src/main/resources/output/students_cinquantaine-" + timestamp + ".csv"));
         writer.setAppendAllowed(false);
         writer.setHeaderCallback(headerWriter -> headerWriter.write("id,firstname,lastname,age,cat"));
         writer.setLineAggregator(new DelimitedLineAggregator<StudentWithCategory>() {{
