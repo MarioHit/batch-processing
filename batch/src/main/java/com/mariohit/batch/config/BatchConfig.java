@@ -1,5 +1,7 @@
 package com.mariohit.batch.config;
 
+import com.mariohit.batch.error.BatchError;
+import com.mariohit.batch.error.BatchErrorRepository;
 import com.mariohit.batch.student.Student;
 import com.mariohit.batch.student.StudentRecord;
 import com.mariohit.batch.student.StudentRepository;
@@ -27,6 +29,7 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +39,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 @Configuration
@@ -49,6 +53,8 @@ public class BatchConfig {
     private final StudentRepository studentRepository;
     private final StudentWithCategoryRepository studentWithCategoryRepository;
     private final JobCompletionNotificationListener listener;
+    @Autowired
+    private BatchErrorRepository batchErrorRepository;
     @Value("${CSV_FILE_PATH}")
     private String csvFilePath;
 
@@ -175,6 +181,15 @@ public class BatchConfig {
                     FlatFileParseException ffpe = (FlatFileParseException) t;
                     // Log or save the skip information, including the line number and input
                     LOGGER.info("Skipping line: " + ffpe.getLineNumber() + " Input: " + ffpe.getInput());
+                    BatchError error = BatchError.builder()
+                            .jobName("importStudents")
+                            .stepName("importCsv")
+                            .lineNumber(ffpe.getLineNumber())
+                            .input(ffpe.getInput())
+                            .errorMessage(t.getMessage())
+                            .timestamp(LocalDateTime.now())
+                            .build();
+                    batchErrorRepository.save(error);
                     return true;
                 }
                 return false;
@@ -266,4 +281,5 @@ public class BatchConfig {
 
         return lineMapper;
     }
+
 }
