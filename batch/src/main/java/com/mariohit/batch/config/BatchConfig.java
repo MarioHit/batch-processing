@@ -6,15 +6,21 @@ import com.mariohit.batch.student.StudentRepository;
 import com.mariohit.batch.studentWithCategory.StudentWithCategory;
 import com.mariohit.batch.studentWithCategory.StudentWithCategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.core.step.skip.AlwaysSkipItemSkipPolicy;
+import org.springframework.batch.core.step.skip.SkipLimitExceededException;
+import org.springframework.batch.core.step.skip.SkipPolicy;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
@@ -36,6 +42,8 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class BatchConfig {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BatchConfig.class);
+
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final StudentRepository studentRepository;
@@ -43,6 +51,8 @@ public class BatchConfig {
     private final JobCompletionNotificationListener listener;
     @Value("${CSV_FILE_PATH}")
     private String csvFilePath;
+
+
 
     /* Etape 1  lire le fichier csv et écrire en Bdd */
 
@@ -153,6 +163,26 @@ public class BatchConfig {
 
 
 
+    // gestion des erreurs :
+
+
+    @Bean
+    public SkipPolicy fileVerificationSkipper() {
+        return new SkipPolicy() {
+            @Override
+            public boolean shouldSkip(Throwable t, long skipCount) throws SkipLimitExceededException {
+                if (t instanceof FlatFileParseException && skipCount <= 10) {
+                    FlatFileParseException ffpe = (FlatFileParseException) t;
+                    // Log or save the skip information, including the line number and input
+                    LOGGER.info("Skipping line: " + ffpe.getLineNumber() + " Input: " + ffpe.getInput());
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+
 
 
     //Création de l'étape 1
@@ -163,6 +193,8 @@ public class BatchConfig {
                 .reader(itemReader())
                 .processor(processor())
                 .writer(writer())
+                .faultTolerant()
+                .skipPolicy(fileVerificationSkipper())
                 .taskExecutor(taskExecutor())
                 .build();
     }

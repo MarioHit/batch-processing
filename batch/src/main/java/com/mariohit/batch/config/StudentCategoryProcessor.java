@@ -34,7 +34,7 @@ public class StudentCategoryProcessor implements ItemProcessor<Student, StudentW
 
         addProcessedStudent(studentWithCategory);
 
-        LOGGER.info("Processed student: {} with category: {}", item.getId(), category);
+        LOGGER.debug("Processed student: {} with category: {}", item.getId(), category);
 
         return studentWithCategory;
     }

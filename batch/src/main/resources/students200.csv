@@ -4,9 +4,9 @@ id,firstname,lastname,age,frais
 3,Pierre,Martin test,22
 4,Lucie,Bernard Test,28
 5,Michel,Moreau test,35
-6,Sophie,Petit,32
-7,Claude,Roux,24
-8,Julie,Fournier,27
+6,Sophie,Petit,32 ,2
+7,Claude,Roux,
+8,Julie,Fournier YY,27a
 9,Jacques,Dubois,29
 10,Claire,Richard,31
 11,René,Simon,26

@@ -11,10 +11,10 @@ public class StudentCategoryFilterProcessor implements ItemProcessor<StudentWith
     @Override
     public StudentWithCategory process(StudentWithCategory item) throws Exception {
         if ("Cinquantaine et plus".equalsIgnoreCase(item.getCat())) {
-            log.info("Processing student: {}", item.getId() + " - " + item.getAge()+ " - " + item.getCat());
+            log.debug("Processing student: {}", item.getId() + " - " + item.getAge()+ " - " + item.getCat());
             return item;
         }
-        log.info("Skipping student: {}", item.getId() + " - " + item.getAge()+ " - " + item.getCat());
+        log.debug("Skipping student: {}", item.getId() + " - " + item.getAge()+ " - " + item.getCat());
         return null;
     }
 }
